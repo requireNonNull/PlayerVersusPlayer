@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerVersusPlayer", "PlayerVersusPlayer.csproj", "{EABEBFDB-1ACE-45C9-8C92-699381B14055}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
