@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace PlayerVersusPlayer
+namespace aivftw
 {
     public enum PlayerValues
     {
@@ -32,7 +32,9 @@ namespace PlayerVersusPlayer
 
         public Player SelectedTarget { get; private set; }
         public event EventHandler<string> InfoSent;
+        public event EventHandler<bool> OnPlayerDeath;
 
+        public bool IsAlive { get; private set; }
         public bool IsAbsorbingDamage { get; private set; }
 
         public Player(string name)

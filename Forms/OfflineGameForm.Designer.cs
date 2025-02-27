@@ -1,6 +1,6 @@
-﻿namespace PlayerVersusPlayer
+﻿namespace aivftw
 {
-    partial class GameForm
+    partial class OfflineGameForm
     {
         /// <summary>
         /// Required designer variable.
@@ -206,7 +206,7 @@
             this.EnemyInfoButton.UseVisualStyleBackColor = false;
             this.EnemyInfoButton.Visible = false;
             // 
-            // Main
+            // OfflineGameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -227,10 +227,10 @@
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Main";
+            this.Name = "OfflineGameForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Player Versus Player";
+            this.Text = "AI Vanquishers: First to Win";
             this.ResumeLayout(false);
             this.PerformLayout();
 

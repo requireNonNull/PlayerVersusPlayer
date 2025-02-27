@@ -1,4 +1,4 @@
-﻿namespace PlayerVersusPlayer
+﻿namespace aivftw
 {
     partial class MainMenu
     {
@@ -55,6 +55,7 @@
             // 
             this.JoinMatchButton.AutoSize = true;
             this.JoinMatchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.JoinMatchButton.Enabled = false;
             this.JoinMatchButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.JoinMatchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.JoinMatchButton.ForeColor = System.Drawing.Color.Black;
@@ -89,13 +90,12 @@
             this.MatchInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MatchInfoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MatchInfoButton.ForeColor = System.Drawing.Color.Black;
-            this.MatchInfoButton.Location = new System.Drawing.Point(112, 78);
+            this.MatchInfoButton.Location = new System.Drawing.Point(12, 78);
             this.MatchInfoButton.Name = "MatchInfoButton";
             this.MatchInfoButton.Size = new System.Drawing.Size(126, 37);
             this.MatchInfoButton.TabIndex = 11;
             this.MatchInfoButton.UseVisualStyleBackColor = false;
             this.MatchInfoButton.Visible = false;
-            this.MatchInfoButton.Click += new System.EventHandler(this.MatchInfoButton_Click);
             // 
             // NameLabel
             // 
@@ -104,9 +104,9 @@
             this.NameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameLabel.Location = new System.Drawing.Point(0, 0);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(255, 29);
+            this.NameLabel.Size = new System.Drawing.Size(333, 29);
             this.NameLabel.TabIndex = 12;
-            this.NameLabel.Text = "Player Versus Player";
+            this.NameLabel.Text = "AI Vanquishers: First to Win";
             // 
             // BotMatchButton
             // 
@@ -141,7 +141,7 @@
             this.Name = "MainMenu";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Player Versus Player";
+            this.Text = "AI Vanquishers: First to Win";
             this.ResumeLayout(false);
             this.PerformLayout();
 

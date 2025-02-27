@@ -2,94 +2,47 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static aivftw.Utils.Animations;
 
-namespace PlayerVersusPlayer
+namespace aivftw
 {
     public partial class MainMenu : Form
     {
         private GameManager _gameManager;
+        private NetworkManager _networkManager;
 
         public MainMenu()
         {
             InitializeComponent();
 
-            _gameManager = new GameManager();
+            _networkManager = new NetworkManager();
+            _gameManager = new GameManager(_networkManager);
+            _ = _networkManager.Initialize(_gameManager);
 
+            _networkManager.OnVersionChecked += NetworkManager_OnVersionChecked;
             _gameManager.StateInfoChanged += OnQueueDataReceived;
 
-            _ = UpdateUI();
-
         }
 
-        private async Task UpdateUI()
+        public void NetworkManager_OnVersionChecked(object sender, bool e)
         {
-            while (true)
+            if (e)
             {
-
-                await Task.Delay(TimeSpan.FromSeconds(0.1));
+                _ = FadeIn(MatchInfoButton, "Version check success!");
+                JoinMatchButton.Enabled = true;
             }
-        }
-
-
-        private async Task FadeIn(Button fadeInButton, string text)
-        {
-            fadeInButton.Text = text;
-
-            if (fadeInButton.Visible) return;
-
-            fadeInButton.BackColor = Color.FromArgb(0, fadeInButton.BackColor);
-            fadeInButton.Visible = true;
-
-            for (int i = 100; i < 255; i++)
+            else
             {
-
-                fadeInButton.BackColor = Color.FromArgb(i, fadeInButton.BackColor);
-                fadeInButton.ForeColor = Color.FromArgb(i, fadeInButton.ForeColor);
-
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
+                _ = FadeIn(MatchInfoButton, "Version check failed! See Github for updates!");
+                JoinMatchButton.Enabled = false;
             }
-
-            fadeInButton.Visible = false;
-        }
-
-        private async Task FadeInAndOut(Button fadeInOutButton, string text)
-        {
-            fadeInOutButton.Text = text;
-
-            if (fadeInOutButton.Visible) return;
-
-            fadeInOutButton.BackColor = Color.FromArgb(0, fadeInOutButton.BackColor);
-            fadeInOutButton.Visible = true;
-
-            for (int i = 155; i < 255; i++)
-            {
-
-                fadeInOutButton.BackColor = Color.FromArgb(i, fadeInOutButton.BackColor);
-                fadeInOutButton.ForeColor = Color.FromArgb(i, fadeInOutButton.ForeColor);
-
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
-            }
-
-            await Task.Delay(TimeSpan.FromMilliseconds(250));
-
-            for (int i = 155; i > 0; i--)
-            {
-                fadeInOutButton.BackColor = Color.FromArgb(i, fadeInOutButton.BackColor);
-                fadeInOutButton.ForeColor = Color.FromArgb(i, fadeInOutButton.ForeColor);
-
-                if (fadeInOutButton.Text.Length >= i)
-                {
-                    fadeInOutButton.Text = fadeInOutButton.Text.Remove(fadeInOutButton.Text.Length - 1);
-                }
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
-            }
-
-            fadeInOutButton.Visible = false;
         }
 
         public void OnQueueDataReceived(object sender, string message)
@@ -100,9 +53,7 @@ namespace PlayerVersusPlayer
 
         private void JoinMatchButton_Click(object sender, EventArgs e)
         {
-            _ = _gameManager.JoinGameQueue(GameMode.Online);
-
-
+            _ = _gameManager.JoinGameQueue();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
@@ -111,20 +62,7 @@ namespace PlayerVersusPlayer
         }
         private void BotMatchButton_Click(object sender, EventArgs e)
         {
-            BotMatchButton.Enabled = false;
-            JoinMatchButton.Enabled = false;
-            _gameManager.SelectGameMode(GameMode.Offline);
-            GameForm gameForm = new GameForm(_gameManager);
-
-            gameForm.Show();
-            this.Close();
-
+            _gameManager.StartOfflineMatch();
         }
-
-        private void MatchInfoButton_Click(object sender, EventArgs e)
-        {
-        }
-
-
     }
 }

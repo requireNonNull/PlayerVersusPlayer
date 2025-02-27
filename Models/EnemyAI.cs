@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PlayerVersusPlayer
+namespace aivftw
 {
     public class EnemyAI : Player
     {

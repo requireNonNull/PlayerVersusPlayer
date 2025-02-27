@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AI Vanquishers: First to Win")]
+[assembly: AssemblyTitle("aivftwserver")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AI Vanquishers: First to Win")]
+[assembly: AssemblyProduct("aivftwserver")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("eabebfdb-1ace-45c9-8c92-699381b14055")]
+[assembly: Guid("e7e2ea72-5166-4a76-bd3b-45f2198b135e")]
 
 // Version information for an assembly consists of the following four values:
 //

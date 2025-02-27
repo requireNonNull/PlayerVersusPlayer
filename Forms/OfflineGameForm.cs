@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static aivftw.Utils.Animations;
 
-namespace PlayerVersusPlayer
+namespace aivftw
 {
-    public partial class GameForm : Form
+    public partial class OfflineGameForm : Form
     {
-        private readonly Player _PlayerOne;
-        private readonly EnemyAI _EnemyAI;
+
+        private Player _player;
+        private EnemyAI _enemyAI;
+
         private readonly PlayerAbility _PlayerHealAbility;
         private readonly PlayerAbility _PlayerShieldAbility;
         private readonly PlayerAbility _PlayerTankAbility;
@@ -30,11 +34,29 @@ namespace PlayerVersusPlayer
         private bool _IsAbilityTipShowing;
 
         private GameManager _gameManager;
+        private Random _random;
 
-        public GameForm(GameManager gameManager)
+        public OfflineGameForm(GameManager gameManager)
         {
             InitializeComponent();
+            if (gameManager == null)
+            {
+                Debug.WriteLine("GameManager is null!");
+            }
             _gameManager = gameManager;
+            _random = new Random();
+
+            _gameManager.SelectGameState(GameState.Active);
+
+            _EnemyHealAbility = new PlayerAbility
+                ("Heal", 10, 10, AbilityType.Heal);
+            _EnemyShieldAbility = new PlayerAbility
+                ("Shield", 10, 5, AbilityType.Absorb);
+            _EnemyTankAbility = new PlayerAbility
+                ("Spot", 4, 10, AbilityType.Tank);
+            _EnemyAttackAbility = new PlayerAbility
+                ("Attack", 2, (double)PlayerValues.AttackDamage, AbilityType.Damage);
+
 
             _enemyAbilities = new List<PlayerAbility>
             {
@@ -61,28 +83,46 @@ namespace PlayerVersusPlayer
                 _PlayerAttackAbility
             };
 
-            _PlayerOne = new Player("Guest001");
-            _EnemyAI = new EnemyAI("Bot001");
-
-            _PlayerOne.SelectTarget(_EnemyAI);
-            _EnemyAI.SelectTarget(_PlayerOne);
-
-            _PlayerOne.InfoSent += this.OnDataReceived;
-            _EnemyAI.OnAbilityUse += this.OnAbilityUseReceived;
+            SetupBotMatch();
 
             _ = UpdateUI();
 
-            _ = _EnemyAI.StartAttacks(_enemyAbilities);
+            this.FormClosing += OfflineGameForm_FormClosing;
+
+        }
+
+        private void OfflineGameForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void SetupBotMatch()
+        {
+            _player = new Player("Guest");
+            _enemyAI = new EnemyAI("Bot");
+
+            _enemyAI.OnAbilityUse += this.OnAbilityUseReceived;
+            _player.InfoSent += this.OnDataReceived;
+
+            _enemyAI.SelectTarget(_player);
+
+            _ = _enemyAI.StartAttacks(_enemyAbilities);
+
         }
 
         private async Task UpdateUI()
         {
+            while (_player == null || _enemyAI == null)
+            {
+                await Task.Delay(100);
+            }
+
             while (true)
             {
-                HealthLabel.Text = Convert.ToString(Math.Round(_PlayerOne.GetHealth(), 2));
-                PlayerNameLabel.Text = Convert.ToString(_PlayerOne.GetName());
+                HealthLabel.Text = Convert.ToString(Math.Round(_player.GetHealth(), 2));
+                PlayerNameLabel.Text = Convert.ToString(_player.GetName());
 
-                if (_PlayerOne.SelectedTarget == _PlayerOne)
+                if (_player.SelectedTarget == _player)
                 {
                     PlayerNameLabel.BorderStyle = BorderStyle.FixedSingle;
                     EnemyNameLabel.BorderStyle = BorderStyle.None;
@@ -94,8 +134,8 @@ namespace PlayerVersusPlayer
                     EnemyNameLabel.BorderStyle = BorderStyle.FixedSingle;
                 }
 
-                EnemyHealthLabel.Text = Convert.ToString(_EnemyAI.GetHealth());
-                EnemyNameLabel.Text = Convert.ToString(_EnemyAI.GetName());
+                EnemyHealthLabel.Text = Convert.ToString(_enemyAI.GetHealth());
+                EnemyNameLabel.Text = Convert.ToString(_enemyAI.GetName());
 
                 if (_PlayerAttackAbility.isOnCooldown)
                 {
@@ -155,102 +195,46 @@ namespace PlayerVersusPlayer
             _IsAbilityTipShowing = false;
         }
 
-        private async Task FadeInInfo(Button fadeInButton, string text)
-        {
-            fadeInButton.Text = text;
-
-            if (fadeInButton.Visible) return;
-
-            fadeInButton.BackColor = Color.FromArgb(0, fadeInButton.BackColor);
-            fadeInButton.Visible = true;
-
-            for (int i = 100; i < 255; i++)
-            {
-
-                fadeInButton.BackColor = Color.FromArgb(i, fadeInButton.BackColor);
-                fadeInButton.ForeColor = Color.FromArgb(i, fadeInButton.ForeColor);
-
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
-            }
-
-            fadeInButton.Visible = false;
-        }
-
-        private async Task FadeInAndOutInfo(Button fadeInButton, string text)
-        {
-            fadeInButton.Text = text;
-
-            if (fadeInButton.Visible) return;
-
-            fadeInButton.BackColor = Color.FromArgb(0, fadeInButton.BackColor);
-            fadeInButton.Visible = true;
-
-            for (int i = 155; i < 255; i++)
-            {
-
-                fadeInButton.BackColor = Color.FromArgb(i, fadeInButton.BackColor);
-                fadeInButton.ForeColor = Color.FromArgb(i, fadeInButton.ForeColor);
-
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
-            }
-
-            await Task.Delay(TimeSpan.FromMilliseconds(250));
-
-            for (int i = 155; i > 0; i--)
-            {
-                fadeInButton.BackColor = Color.FromArgb(i, fadeInButton.BackColor);
-                fadeInButton.ForeColor = Color.FromArgb(i, fadeInButton.ForeColor);
-
-                if (fadeInButton.Text.Length >= i)
-                {
-                    fadeInButton.Text = fadeInButton.Text.Remove(fadeInButton.Text.Length - 1);
-                }
-                await Task.Delay(TimeSpan.FromMilliseconds(0.5));
-            }
-
-            fadeInButton.Visible = false;
-        }
-
         public void OnDataReceived(object sender, string message)
         {
-            _ = FadeInAndOutInfo(InfoButton, message);
+            _ = FadeInAndOut(InfoButton, message);
             Console.WriteLine($"Received: {message}");
         }
 
         public void OnAbilityUseReceived(object sender, string message)
         {
-            _ = FadeInInfo(EnemyInfoButton, message);
+            _ = FadeIn(EnemyInfoButton, message);
             Console.WriteLine($"Ability used: {message}");
         }
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.UseAbility(_PlayerAttackAbility);
+            _player.UseAbility(_PlayerAttackAbility);
         }
 
         private void HealButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.UseAbility(_PlayerHealAbility);
+            _player.UseAbility(_PlayerHealAbility);
         }
 
         private void TankButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.UseAbility(_PlayerTankAbility);
+            _player.UseAbility(_PlayerTankAbility);
         }
 
         private void ShieldButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.UseAbility(_PlayerShieldAbility);
+            _player.UseAbility(_PlayerShieldAbility);
         }
 
         private void SelectYourselfButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.SelectTarget(_PlayerOne);
+            _player.SelectTarget(_player);
         }
 
         private void SelectEnemyButton_Click(object sender, EventArgs e)
         {
-            _PlayerOne.SelectTarget(_EnemyAI);
+            _player.SelectTarget(_enemyAI);
         }
 
         private async void AttackButton_MouseHover(object sender, EventArgs e)
@@ -272,5 +256,6 @@ namespace PlayerVersusPlayer
         {
             await ShowTooltip(sender, _PlayerShieldAbility, "Absorbing");
         }
+
     }
 }

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerVersusPlayer", "PlayerVersusPlayer.csproj", "{EABEBFDB-1ACE-45C9-8C92-699381B14055}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aivftw", "aivftw.csproj", "{EABEBFDB-1ACE-45C9-8C92-699381B14055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aivftwserver", "aivftwserver\aivftwserver.csproj", "{E7E2EA72-5166-4A76-BD3B-45F2198B135E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EABEBFDB-1ACE-45C9-8C92-699381B14055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E2EA72-5166-4A76-BD3B-45F2198B135E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E2EA72-5166-4A76-BD3B-45F2198B135E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E2EA72-5166-4A76-BD3B-45F2198B135E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E2EA72-5166-4A76-BD3B-45F2198B135E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
